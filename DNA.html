@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Genesis & Genomics: The Evolution of Life's Logic</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #0f172a;
+      --bg-secondary: #1e293b;
+      --bg-card: #162032;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-violet: #8b5cf6;
+      --text-primary: #f1f5f9;
+      --text-muted: #94a3b8;
+      --border-subtle: rgba(6,182,212,0.15);
+    }
+
+    * { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ===== SCROLLBAR ===== */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-primary); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
+
+    /* ===== NOISE TEXTURE OVERLAY ===== */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      min-height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .dna-bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 40%, rgba(6,182,212,0.08) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 20% 70%, rgba(16,185,129,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 80% 80%, rgba(139,92,246,0.07) 0%, transparent 50%);
+    }
+
+    .helix-svg {
+      position: absolute;
+      right: -60px;
+      top: 50%;
+      transform: translateY(-50%);
+      opacity: 0.12;
+      width: 600px;
+    }
+
+    @keyframes helixRotate {
+      0%   { transform: translateY(-50%) rotate(0deg); }
+      100% { transform: translateY(-50%) rotate(360deg); }
+    }
+
+    @keyframes fadeSlideUp {
+      0%   { opacity: 0; transform: translateY(30px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .animate-hero-1 { animation: fadeSlideUp 0.8s ease forwards; }
+    .animate-hero-2 { animation: fadeSlideUp 0.8s ease 0.2s forwards; opacity: 0; }
+    .animate-hero-3 { animation: fadeSlideUp 0.8s ease 0.4s forwards; opacity: 0; }
+    .animate-hero-4 { animation: fadeSlideUp 0.8s ease 0.6s forwards; opacity: 0; }
+
+    /* ===== NAV ===== */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(15,23,42,0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .nav-link {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: color 0.2s;
+      padding: 0.25rem 0.5rem;
+    }
+    .nav-link:hover { color: var(--accent-cyan); }
+
+    /* ===== SECTION TITLES ===== */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+      display: block;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 700;
+      line-height: 1.15;
+      background: linear-gradient(135deg, #f1f5f9 40%, var(--accent-cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    /* ===== CARDS ===== */
+    .glass-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s;
+    }
+    .glass-card:hover {
+      border-color: rgba(6,182,212,0.4);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px rgba(6,182,212,0.07);
+    }
+
+    /* ===== TIMELINE ===== */
+    .timeline-line {
+      position: absolute;
+      left: 24px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-cyan), var(--accent-emerald), var(--accent-violet));
+    }
+
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 2px solid var(--bg-primary);
+      box-shadow: 0 0 8px var(--accent-cyan);
+      flex-shrink: 0;
+    }
+
+    /* ===== MITOSIS PHASES ===== */
+    .phase-badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ===== QUIZ ===== */
+    .quiz-option {
+      background: rgba(30,41,59,0.7);
+      border: 1px solid rgba(148,163,184,0.15);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: left;
+      width: 100%;
+      color: var(--text-primary);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.9rem;
+    }
+    .quiz-option:hover:not(:disabled) { border-color: var(--accent-cyan); background: rgba(6,182,212,0.08); }
+    .quiz-option.correct { border-color: var(--accent-emerald); background: rgba(16,185,129,0.12); color: #6ee7b7; }
+    .quiz-option.incorrect { border-color: #f87171; background: rgba(248,113,113,0.1); color: #fca5a5; }
+
+    /* ===== BLAST TOOL ===== */
+    .blast-input {
+      background: rgba(15,23,42,0.9);
+      border: 1px solid rgba(6,182,212,0.3);
+      border-radius: 8px;
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1rem;
+      padding: 0.75rem 1rem;
+      width: 100%;
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .blast-input:focus { border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(6,182,212,0.1); }
+
+    .blast-btn {
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-emerald));
+      color: #0f172a;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 0.05em;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+    .blast-btn:hover { opacity: 0.9; transform: scale(1.02); }
+
+    .loading-bar {
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald), var(--accent-violet), var(--accent-cyan));
+      background-size: 200%;
+      border-radius: 2px;
+      animation: loadingMove 1s linear infinite;
+    }
+    @keyframes loadingMove { 0% { background-position: 0%; } 100% { background-position: 200%; } }
+
+    /* ===== CODE BLOCK ===== */
+    .code-block {
+      background: #0a0f1a;
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 12px;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      line-height: 1.7;
+      padding: 1.5rem;
+      color: #cbd5e1;
+    }
+    .code-block .c-kw   { color: #7c3aed; }
+    .code-block .c-fn   { color: #06b6d4; }
+    .code-block .c-num  { color: #10b981; }
+    .code-block .c-cmt  { color: #475569; font-style: italic; }
+    .code-block .c-str  { color: #f59e0b; }
+    .code-block .c-type { color: #8b5cf6; }
+
+    /* ===== BIOMOLECULE CARDS ===== */
+    .bio-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1rem;
+    }
+
+    /* ===== DIVIDER ===== */
+    .section-divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
+      margin: 0;
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #080e1a;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    /* ===== SCROLL REVEAL ===== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== STAT PILL ===== */
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(6,182,212,0.08);
+      border: 1px solid rgba(6,182,212,0.2);
+      border-radius: 999px;
+      padding: 0.3rem 0.9rem;
+      font-size: 0.78rem;
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* genome progress bars */
+    .genome-bar {
+      height: 6px;
+      border-radius: 3px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-emerald));
+      transition: width 1.2s ease;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAVIGATION ===================== -->
+<nav>
+  <div class="max-w-7xl mx-auto px-6 py-3 flex items-center justify-between">
+    <a href="#hero" class="font-mono text-xs tracking-widest text-cyan-400 uppercase">G&amp;G // v2.0</a>
+    <div class="hidden md:flex items-center gap-6">
+      <a href="#timeline" class="nav-link">Unit 1</a>
+      <a href="#biochem" class="nav-link">Unit 2</a>
+      <a href="#future" class="nav-link">Future Lab</a>
+      <a href="#footer" class="nav-link">Resources</a>
+    </div>
+    <span class="stat-pill">
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--accent-emerald);animation:pulse 2s infinite"></span>
+      Bio-CS Convergence
+    </span>
+  </div>
+</nav>
+
+<!-- ===================== HERO ===================== -->
+<section id="hero">
+  <div class="dna-bg"></div>
+
+  <!-- Decorative helix SVG -->
+  <svg class="helix-svg" viewBox="0 0 200 700" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="hg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#06b6d4"/>
+        <stop offset="50%" stop-color="#10b981"/>
+        <stop offset="100%" stop-color="#8b5cf6"/>
+      </linearGradient>
+    </defs>
+    <!-- Strand 1 -->
+    <path d="M100,0 C160,50 40,100 100,150 C160,200 40,250 100,300 C160,350 40,400 100,450 C160,500 40,550 100,600 C160,650 40,700 100,700" fill="none" stroke="url(#hg)" stroke-width="2.5"/>
+    <!-- Strand 2 -->
+    <path d="M100,0 C40,50 160,100 100,150 C40,200 160,250 100,300 C40,350 160,400 100,450 C40,500 160,550 100,600 C40,650 160,700 100,700" fill="none" stroke="url(#hg)" stroke-width="2.5"/>
+    <!-- Rungs -->
+    <line x1="100" y1="37" x2="100" y2="37" stroke="#06b6d4" stroke-width="1.5" opacity="0.7"/>
+    <line x1="60" y1="50" x2="140" y2="50" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="100" x2="160" y2="100" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="150" x2="140" y2="150" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="200" x2="160" y2="200" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="250" x2="140" y2="250" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="300" x2="160" y2="300" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="350" x2="140" y2="350" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="400" x2="160" y2="400" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="450" x2="140" y2="450" stroke="#10b981" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="500" x2="160" y2="500" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="550" x2="140" y2="550" stroke="#8b5cf6" stroke-width="1.5" opacity="0.6"/>
+    <line x1="40" y1="600" x2="160" y2="600" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+    <line x1="60" y1="650" x2="140" y2="650" stroke="#06b6d4" stroke-width="1.5" opacity="0.6"/>
+  </svg>
+
+  <div class="max-w-7xl mx-auto px-6 pt-24 pb-20 relative z-10 w-full">
+    <div class="max-w-3xl">
+      <span class="section-label animate-hero-1">// Biotechnology &amp; Computational Logic</span>
+      <h1 class="animate-hero-2" style="font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5.5vw,4.5rem);font-weight:700;line-height:1.1;margin-bottom:1.5rem;">
+        Genesis <em style="color:var(--accent-cyan);font-style:italic;">&amp;</em> Genomics
+        <br/>
+        <span style="background:linear-gradient(135deg,#10b981,#06b6d4);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">
+          The Evolution of Life's Logic
+        </span>
+      </h1>
+      <p class="animate-hero-3" style="color:var(--text-muted);font-size:1.1rem;line-height:1.75;max-width:560px;margin-bottom:2rem;">
+        Evolution is nature's oldest and most powerful algorithm — 3.8 billion years of iterative optimization, selection pressure, and genetic crossover. This site decodes life's blueprint at the intersection of <strong style="color:var(--text-primary)">biology</strong> and <strong style="color:var(--accent-cyan)">computational logic</strong>.
+      </p>
+      <div class="animate-hero-4 flex flex-wrap gap-3">
+        <a href="#timeline" class="blast-btn">Explore Units →</a>
+        <a href="#future" style="background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;font-weight:600;font-size:0.85rem;padding:0.75rem 1.5rem;border-radius:8px;transition:all 0.2s;text-decoration:none;" onmouseover="this.style.background='rgba(139,92,246,0.25)'" onmouseout="this.style.background='rgba(139,92,246,0.15)'">Future Lab</a>
+      </div>
+
+      <!-- Hero stats -->
+      <div class="flex flex-wrap gap-4 mt-10 animate-hero-4">
+        <div class="stat-pill">~3.2 billion base pairs</div>
+        <div class="stat-pill">~20,000 human genes</div>
+        <div class="stat-pill" style="color:var(--accent-emerald);border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.08);">5 kingdoms of life</div>
+        <div class="stat-pill" style="color:#c4b5fd;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.08);">46 chromosomes</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================== UNIT 1: EVOLUTIONARY TIMELINE ===================== -->
+<section id="timeline" class="py-24 px-6 relative">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal mb-16">
+      <span class="section-label">// Unit 01</span>
+      <h2 class="section-title">The Evolutionary Timeline</h2>
+      <p style="color:var(--text-muted);max-width:560px;margin-top:0.75rem;line-height:1.75;">From the first prokaryotic sparks to complex multicellular organisms — a journey through classification, cell theory, and the choreography of cell division.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-16 items-start">
+      <!-- LEFT: Timeline -->
+      <div class="reveal">
+        <div style="position:relative;padding-left:52px;">
+          <div class="timeline-line"></div>
+
+          <!-- 1 -->
+          <div style="position:relative;margin-bottom:2.5rem;">
+            <div class="timeline-dot" style="position:absolute;left:-40px;top:4px;background:var(--accent-cyan);box-shadow:0 0 10px var(--accent-cyan);"></div>
+            <div class="glass-card p-5">
+              <span class="phase-badge" style="background:rgba(6,182,212,0.1);color:var(--accent-cyan);border:1px solid rgba(6,182,212,0.2);">Whittaker 1969</span>
+              <h3 style="font-size:1.05rem;font-weight:700;margin:0.75rem 0 0.5rem;">5-Kingdom Classification</h3>
+              <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Robert Whittaker proposed dividing all life into <strong style="color:var(--text-primary)">Monera, Protista, Fungi, Plantae,</strong> and <strong style="color:var(--text-primary)">Animalia</strong> based on cell type, nutrition mode, and body organization. Monera are prokaryotes; all others are eukaryotes.</p>
+              <div class="flex flex-wrap gap-2 mt-3">
+                <span style="font-size:0.7rem;padding:2px 8px;border-radius:999px;background:rgba(6,182,212,0.08);color:#67e8f9;border:1px solid rgba(6,182,212,0.15);">Monera</span>
+                <span style="font-size:0.7rem;padding:2px 8px;border-radius:999px;background:rgba(16,185,129,0.08);color:#6ee7b7;border:1px solid rgba(16,185,129,0.15);">Protista</span>
+                <span style="font-size:0.7rem;padding:2px 8px;border-radius:999px;background:rgba(139,92,246,0.08);color:#c4b5fd;border:1px solid rgba(139,92,246,0.15);">Fungi</span>
+                <span style="font-size:0.7rem;padding:2px 8px;border-radius:999px;background:rgba(251,146,60,0.08);color:#fdba74;border:1px solid rgba(251,146,60,0.15);">Plantae</span>
+                <span style="font-size:0.7rem;padding:2px 8px;border-radius:999px;background:rgba(248,113,113,0.08);color:#fca5a5;border:1px solid rgba(248,113,113,0.15);">Animalia</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2 -->
+          <div style="position:relative;margin-bottom:2.5rem;">
+            <div class="timeline-dot" style="position:absolute;left:-40px;top:4px;background:var(--accent-emerald);box-shadow:0 0 10px var(--accent-emerald);"></div>
+            <div class="glass-card p-5">
+              <span class="phase-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);border:1px solid rgba(16,185,129,0.2);">Cell Theory</span>
+              <h3 style="font-size:1.05rem;font-weight:700;margin:0.75rem 0 0.5rem;">The Three Postulates</h3>
+              <div style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">
+                <div style="display:flex;gap:0.75rem;margin-bottom:0.5rem;"><span style="color:var(--accent-emerald);font-family:'JetBrains Mono',monospace;font-size:0.7rem;">01</span> All living organisms are composed of cells.</div>
+                <div style="display:flex;gap:0.75rem;margin-bottom:0.5rem;"><span style="color:var(--accent-emerald);font-family:'JetBrains Mono',monospace;font-size:0.7rem;">02</span> The cell is the basic structural and functional unit of life.</div>
+                <div style="display:flex;gap:0.75rem;"><span style="color:var(--accent-emerald);font-family:'JetBrains Mono',monospace;font-size:0.7rem;">03</span> All cells arise from pre-existing cells (Virchow, 1855).</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3 -->
+          <div style="position:relative;margin-bottom:2.5rem;">
+            <div class="timeline-dot" style="position:absolute;left:-40px;top:4px;background:#a78bfa;box-shadow:0 0 10px #a78bfa;"></div>
+            <div class="glass-card p-5">
+              <span class="phase-badge" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border:1px solid rgba(139,92,246,0.2);">Cell Division</span>
+              <h3 style="font-size:1.05rem;font-weight:700;margin:0.75rem 0 0.5rem;">Mitosis: The Replication Dance</h3>
+              <div style="display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:0.75rem;">
+                <span class="phase-badge" style="background:rgba(6,182,212,0.1);color:#67e8f9;border:1px solid rgba(6,182,212,0.2);">Prophase</span>
+                <span style="color:var(--text-muted);align-self:center;">→</span>
+                <span class="phase-badge" style="background:rgba(16,185,129,0.1);color:#6ee7b7;border:1px solid rgba(16,185,129,0.2);">Metaphase</span>
+                <span style="color:var(--text-muted);align-self:center;">→</span>
+                <span class="phase-badge" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border:1px solid rgba(139,92,246,0.2);">Anaphase</span>
+                <span style="color:var(--text-muted);align-self:center;">→</span>
+                <span class="phase-badge" style="background:rgba(251,146,60,0.1);color:#fdba74;border:1px solid rgba(251,146,60,0.2);">Telophase</span>
+              </div>
+              <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.6;">Produces 2 genetically identical daughter cells. Essential for growth, repair, and asexual reproduction. Preceded by S phase (DNA replication) during interphase.</p>
+            </div>
+          </div>
+
+          <!-- 4 -->
+          <div style="position:relative;">
+            <div class="timeline-dot" style="position:absolute;left:-40px;top:4px;background:#f59e0b;box-shadow:0 0 10px #f59e0b;"></div>
+            <div class="glass-card p-5">
+              <span class="phase-badge" style="background:rgba(245,158,11,0.1);color:#fcd34d;border:1px solid rgba(245,158,11,0.2);">Meiosis</span>
+              <h3 style="font-size:1.05rem;font-weight:700;margin:0.75rem 0 0.5rem;">Meiosis: Genetic Shuffle</h3>
+              <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Two rounds of division (Meiosis I &amp; II) yield <strong style="color:var(--text-primary)">4 haploid gametes</strong>. Crossing over during Prophase I generates genetic diversity — nature's stochastic recombination operator.</p>
+              <div style="display:flex;gap:0.75rem;margin-top:0.75rem;">
+                <div style="flex:1;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.6rem;text-align:center;font-size:0.75rem;">
+                  <div style="color:#fcd34d;font-weight:700;margin-bottom:2px;">Meiosis I</div>
+                  <div style="color:var(--text-muted);">Reductional</div>
+                </div>
+                <div style="flex:1;background:rgba(245,158,11,0.07);border:1px solid rgba(245,158,11,0.15);border-radius:8px;padding:0.6rem;text-align:center;font-size:0.75rem;">
+                  <div style="color:#fcd34d;font-weight:700;margin-bottom:2px;">Meiosis II</div>
+                  <div style="color:var(--text-muted);">Equational</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT: Image + Homeostasis -->
+      <div class="reveal flex flex-col gap-6">
+        <div class="glass-card overflow-hidden">
+          <img src="https://images.unsplash.com/photo-1530026186672-2cd00ffc50fe?w=800&q=80" alt="Mitochondria diagram – cellular energy organelle" style="width:100%;height:220px;object-fit:cover;filter:saturate(0.7) hue-rotate(160deg);" loading="lazy"/>
+          <div style="padding:1rem;">
+            <p style="font-size:0.75rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">// Cellular structures – the organelle ecosystem</p>
+          </div>
+        </div>
+
+        <div class="glass-card p-6">
+          <h3 style="font-size:1.05rem;font-weight:700;margin-bottom:0.5rem;display:flex;align-items:center;gap:0.5rem;">
+            <span style="font-size:1.2rem;">⚖️</span> Homeostasis
+          </h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.65;margin-bottom:1rem;">The maintenance of internal equilibrium despite external fluctuations. It is biology's <em style="color:var(--accent-cyan)">feedback control system</em> — analogous to a PID controller in engineering.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;">
+            <div style="background:rgba(6,182,212,0.07);border:1px solid rgba(6,182,212,0.15);border-radius:8px;padding:0.75rem;font-size:0.78rem;">
+              <div style="color:var(--accent-cyan);font-weight:600;margin-bottom:2px;">Negative Feedback</div>
+              <div style="color:var(--text-muted);">Body temp, blood glucose regulation</div>
+            </div>
+            <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:0.75rem;font-size:0.78rem;">
+              <div style="color:var(--accent-emerald);font-weight:600;margin-bottom:2px;">Positive Feedback</div>
+              <div style="color:var(--text-muted);">Childbirth contractions, blood clotting</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== QUIZ ===== -->
+    <div class="reveal mt-16">
+      <div class="glass-card p-8" style="border-color:rgba(139,92,246,0.2);">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:1rem;">🧠</div>
+          <div>
+            <h3 style="font-size:1.1rem;font-weight:700;">Unit 1 — Knowledge Quiz</h3>
+            <p style="font-size:0.78rem;color:var(--text-muted);">Test your understanding of cell biology &amp; homeostasis</p>
+          </div>
+          <div style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent-cyan);" id="quiz-score-display">Score: 0/5</div>
+        </div>
+        <div id="quiz-container"></div>
+        <div id="quiz-result" style="display:none;margin-top:1.5rem;padding:1.25rem;border-radius:10px;text-align:center;"></div>
+        <button id="quiz-restart" style="display:none;margin-top:1rem;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'Space Grotesk',sans-serif;width:100%;" onclick="initQuiz()">↺ Restart Quiz</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================== UNIT 2: BIOCHEMICAL BRICKS ===================== -->
+<section id="biochem" class="py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal mb-16">
+      <span class="section-label">// Unit 02</span>
+      <h2 class="section-title">Biochemical Bricks</h2>
+      <p style="color:var(--text-muted);max-width:560px;margin-top:0.75rem;line-height:1.75;">The molecular alphabet of life — four classes of macromolecules that encode, store, and execute biological information.</p>
+    </div>
+
+    <!-- Biomolecule Grid -->
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-5 mb-16 reveal">
+
+      <div class="glass-card p-5" style="border-color:rgba(251,146,60,0.2);">
+        <div class="bio-icon" style="background:rgba(251,146,60,0.1);border:1px solid rgba(251,146,60,0.2);">🍬</div>
+        <h3 style="font-weight:700;margin-bottom:0.5rem;color:#fdba74;">Carbohydrates</h3>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">Primary energy currency. Monomers (glucose) link into polymers (glycogen, cellulose, starch).</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(251,146,60,0.7);">C:H:O → 1:2:1</div>
+      </div>
+
+      <div class="glass-card p-5" style="border-color:rgba(16,185,129,0.2);">
+        <div class="bio-icon" style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);">💧</div>
+        <h3 style="font-weight:700;margin-bottom:0.5rem;color:#6ee7b7;">Lipids</h3>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">Hydrophobic energy stores. Form bilayer membranes, hormones (steroids), and fat-soluble vitamins.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(16,185,129,0.7);">Saturated / Unsaturated</div>
+      </div>
+
+      <div class="glass-card p-5" style="border-color:rgba(6,182,212,0.2);">
+        <div class="bio-icon" style="background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);">🔩</div>
+        <h3 style="font-weight:700;margin-bottom:0.5rem;color:#67e8f9;">Proteins</h3>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">20 amino acid alphabet. Enzymes, structural proteins, antibodies — the machines of life.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(6,182,212,0.7);">1°→ 2°→ 3°→ 4° structure</div>
+      </div>
+
+      <div class="glass-card p-5" style="border-color:rgba(139,92,246,0.2);">
+        <div class="bio-icon" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);">🧬</div>
+        <h3 style="font-weight:700;margin-bottom:0.5rem;color:#c4b5fd;">DNA</h3>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">Deoxyribonucleic acid. Double helix, antiparallel strands, base pairs A-T and G-C. Master blueprint.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(139,92,246,0.7);">5'—ATGC...—3'</div>
+      </div>
+
+      <div class="glass-card p-5" style="border-color:rgba(248,113,113,0.2);">
+        <div class="bio-icon" style="background:rgba(248,113,113,0.1);border:1px solid rgba(248,113,113,0.2);">📡</div>
+        <h3 style="font-weight:700;margin-bottom:0.5rem;color:#fca5a5;">RNA</h3>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.6;margin-bottom:0.75rem;">Single-stranded messenger. mRNA (template), tRNA (adaptor), rRNA (ribosomal). Base U replaces T.</p>
+        <div style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:rgba(248,113,113,0.7);">mRNA / tRNA / rRNA</div>
+      </div>
+    </div>
+
+    <!-- DNA image -->
+    <div class="reveal mb-16">
+      <div class="glass-card overflow-hidden flex flex-col md:flex-row">
+        <img src="https://images.unsplash.com/photo-1628595351029-c2bf17511435?w=800&q=80" alt="DNA double helix structure visualization" style="width:100%;max-height:240px;object-fit:cover;filter:saturate(0.6) hue-rotate(200deg);" loading="lazy"/>
+        <div style="padding:1.5rem;display:flex;flex-direction:column;justify-content:center;">
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Central Dogma of Molecular Biology</h3>
+          <div style="display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;font-size:0.85rem;">
+            <span style="background:rgba(139,92,246,0.15);color:#c4b5fd;padding:4px 12px;border-radius:999px;border:1px solid rgba(139,92,246,0.3);">DNA</span>
+            <span style="color:var(--accent-cyan);">→ Transcription →</span>
+            <span style="background:rgba(248,113,113,0.12);color:#fca5a5;padding:4px 12px;border-radius:999px;border:1px solid rgba(248,113,113,0.25);">mRNA</span>
+            <span style="color:var(--accent-emerald);">→ Translation →</span>
+            <span style="background:rgba(6,182,212,0.12);color:#67e8f9;padding:4px 12px;border-radius:999px;border:1px solid rgba(6,182,212,0.25);">Protein</span>
+          </div>
+          <p style="font-size:0.82rem;color:var(--text-muted);margin-top:0.75rem;line-height:1.6;">Francis Crick's 1958 hypothesis — information flows from DNA → RNA → Protein, establishing the molecular basis of heredity and function.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BLAST TOOL ===== -->
+    <div class="reveal">
+      <div class="glass-card p-8" style="border-color:rgba(6,182,212,0.2);background:linear-gradient(135deg,rgba(6,182,212,0.03),var(--bg-card));">
+        <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
+          <div style="width:36px;height:36px;border-radius:8px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.25);display:flex;align-items:center;justify-content:center;font-size:1rem;">🔍</div>
+          <div>
+            <h3 style="font-size:1.1rem;font-weight:700;">BLAST Tool Simulation</h3>
+            <p style="font-size:0.78rem;color:var(--text-muted);">Basic Local Alignment Search Tool — simulated sequence database search</p>
+          </div>
+          <span style="margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text-muted);border:1px solid rgba(148,163,184,0.15);padding:3px 8px;border-radius:4px;">NCBI-sim v1.0</span>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;margin-bottom:1rem;flex-wrap:wrap;">
+          <input class="blast-input" id="blast-input" type="text" placeholder="Enter DNA sequence (e.g. ATGCGATCGTA...)" style="flex:1;min-width:200px;"/>
+          <button class="blast-btn" onclick="runBLAST()">▶ Run BLAST</button>
+        </div>
+
+        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:1rem;">
+          <span style="font-size:0.72rem;color:var(--text-muted);align-self:center;">Try:</span>
+          <button onclick="setSeq('ATGCGATCGTAGC')" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.2);color:var(--accent-cyan);padding:3px 10px;border-radius:4px;cursor:pointer;">ATGCGATCGTAGC</button>
+          <button onclick="setSeq('GCTATCGATCGAT')" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2);color:var(--accent-emerald);padding:3px 10px;border-radius:4px;cursor:pointer;">GCTATCGATCGAT</button>
+          <button onclick="setSeq('TTAGGCATGCATG')" style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;background:rgba(139,92,246,0.08);border:1px solid rgba(139,92,246,0.2);color:#c4b5fd;padding:3px 10px;border-radius:4px;cursor:pointer;">TTAGGCATGCATG</button>
+        </div>
+
+        <div id="blast-loading" style="display:none;margin-bottom:1rem;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.5rem;" id="blast-status-text">Initializing BLAST search...</div>
+          <div class="loading-bar"></div>
+        </div>
+
+        <div id="blast-result" style="display:none;"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================== FUTURE LAB ===================== -->
+<section id="future" class="py-24 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="reveal mb-16">
+      <span class="section-label">// The Future Lab</span>
+      <h2 class="section-title">Engineering Biology</h2>
+      <p style="color:var(--text-muted);max-width:560px;margin-top:0.75rem;line-height:1.75;">Where genomics meets therapeutic intervention — from decoding the entire human genome to reprogramming stem cells.</p>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-8 mb-12">
+      <!-- Stem Cells -->
+      <div class="reveal glass-card p-7">
+        <div style="display:flex;gap:1rem;margin-bottom:1.25rem;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🔬</div>
+          <div>
+            <h3 style="font-size:1.15rem;font-weight:700;">Stem Cell Applications</h3>
+            <p style="font-size:0.78rem;color:var(--accent-emerald);">Regenerative Medicine</p>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.25rem;">Stem cells are undifferentiated cells with unlimited self-renewal capacity and the ability to differentiate into specialized cell types. They are classified by potency:</p>
+        <div style="display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.25rem;">
+          <div style="display:flex;gap:0.75rem;align-items:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-emerald);flex-shrink:0;"></span>
+            <span style="font-size:0.83rem;color:var(--text-muted);"><strong style="color:#6ee7b7;">Totipotent</strong> — can become any cell type (zygote)</span>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:var(--accent-cyan);flex-shrink:0;"></span>
+            <span style="font-size:0.83rem;color:var(--text-muted);"><strong style="color:#67e8f9;">Pluripotent</strong> — most body cells (embryonic stem cells)</span>
+          </div>
+          <div style="display:flex;gap:0.75rem;align-items:center;">
+            <span style="width:8px;height:8px;border-radius:50%;background:#a78bfa;flex-shrink:0;"></span>
+            <span style="font-size:0.83rem;color:var(--text-muted);"><strong style="color:#c4b5fd;">Multipotent</strong> — specific tissue types (bone marrow)</span>
+          </div>
+        </div>
+        <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:0.75rem;font-size:0.8rem;color:var(--text-muted);">
+          <strong style="color:#6ee7b7;">Applications:</strong> Parkinson's disease, spinal cord injury, diabetes, cardiac repair, leukaemia treatment via bone marrow transplants.
+        </div>
+      </div>
+
+      <!-- HGP -->
+      <div class="reveal glass-card p-7">
+        <div style="display:flex;gap:1rem;margin-bottom:1.25rem;">
+          <div style="width:48px;height:48px;border-radius:12px;background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.2);display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;">🗺️</div>
+          <div>
+            <h3 style="font-size:1.15rem;font-weight:700;">Human Genome Project</h3>
+            <p style="font-size:0.78rem;color:var(--accent-cyan);">1990 – 2003</p>
+          </div>
+        </div>
+        <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.25rem;">The HGP was an international scientific endeavour to map all ~3.2 billion base pairs and identify all human genes. Completed in April 2003 at a cost of ~$3 billion.</p>
+
+        <div style="display:flex;flex-direction:column;gap:0.75rem;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;">
+              <span style="color:var(--text-muted);">Genome sequenced</span>
+              <span style="color:var(--accent-cyan);font-family:'JetBrains Mono',monospace;">99.99%</span>
+            </div>
+            <div style="background:rgba(6,182,212,0.1);border-radius:3px;height:6px;">
+              <div class="genome-bar" style="width:99.99%;"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;">
+              <span style="color:var(--text-muted);">Protein-coding genes identified</span>
+              <span style="color:var(--accent-emerald);font-family:'JetBrains Mono',monospace;">~20,000</span>
+            </div>
+            <div style="background:rgba(16,185,129,0.1);border-radius:3px;height:6px;">
+              <div class="genome-bar" style="width:72%;background:linear-gradient(90deg,var(--accent-emerald),#34d399);"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.78rem;margin-bottom:4px;">
+              <span style="color:var(--text-muted);">Non-coding DNA ("dark genome")</span>
+              <span style="color:#c4b5fd;font-family:'JetBrains Mono',monospace;">~98%</span>
+            </div>
+            <div style="background:rgba(139,92,246,0.1);border-radius:3px;height:6px;">
+              <div class="genome-bar" style="width:98%;background:linear-gradient(90deg,#8b5cf6,#a78bfa);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- C-Logic Code Block -->
+    <div class="reveal">
+      <div class="glass-card" style="border-color:rgba(139,92,246,0.25);">
+        <div style="padding:1rem 1.5rem;border-bottom:1px solid rgba(139,92,246,0.15);display:flex;align-items:center;gap:0.75rem;">
+          <div style="display:flex;gap:6px;">
+            <div style="width:10px;height:10px;border-radius:50%;background:#ff5f57;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#febc2e;"></div>
+            <div style="width:10px;height:10px;border-radius:50%;background:#28c840;"></div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-muted);">genetic_algorithm.c</span>
+          <span style="margin-left:auto;font-size:0.7rem;padding:2px 8px;border-radius:4px;background:rgba(139,92,246,0.12);color:#c4b5fd;border:1px solid rgba(139,92,246,0.2);">C-Logic of Life</span>
+        </div>
+        <div class="code-block">
+<pre>
+<span class="c-cmt">/*
+ * THE C-LOGIC OF LIFE
+ * Genetic Algorithm — mimicking evolutionary selection in code.
+ * Biological parallel: Population → Selection → Crossover → Mutation → Next Gen
+ */</span>
+
+<span class="c-kw">#include</span> <span class="c-str">&lt;stdio.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;stdlib.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;string.h&gt;</span>
+<span class="c-kw">#include</span> <span class="c-str">&lt;time.h&gt;</span>
+
+<span class="c-kw">#define</span> <span class="c-num">POP_SIZE    50</span>   <span class="c-cmt">// Population of organisms</span>
+<span class="c-kw">#define</span> <span class="c-num">GENE_LEN    16</span>   <span class="c-cmt">// Length of genetic sequence (chromosome)</span>
+<span class="c-kw">#define</span> <span class="c-num">TARGET      0xABCD</span> <span class="c-cmt">// The 'optimal phenotype' we're evolving toward</span>
+<span class="c-kw">#define</span> <span class="c-num">MUT_RATE    0.02f</span> <span class="c-cmt">// 2% mutation rate per gene bit</span>
+
+<span class="c-cmt">/* === CHROMOSOME STRUCTURE ===
+ * Analogous to a single organism's haploid genome
+ */</span>
+<span class="c-type">typedef</span> <span class="c-kw">struct</span> {
+    <span class="c-type">unsigned int</span> chromosome;   <span class="c-cmt">// Binary gene sequence</span>
+    <span class="c-type">float</span>        fitness;       <span class="c-cmt">// Survival score (higher = more fit)</span>
+} Organism;
+
+<span class="c-cmt">/* === STEP 1: INITIALIZATION ===
+ * Like Abiogenesis — random primordial chemistry creates first genomes
+ */</span>
+<span class="c-type">void</span> <span class="c-fn">init_population</span>(Organism population[]) {
+    srand((<span class="c-type">unsigned</span>)time(<span class="c-num">NULL</span>));
+    <span class="c-kw">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; POP_SIZE; i++) {
+        population[i].chromosome = rand() % (<span class="c-num">1</span> &lt;&lt; GENE_LEN);
+        population[i].fitness    = <span class="c-num">0.0f</span>;
+    }
+}
+
+<span class="c-cmt">/* === STEP 2: FITNESS FUNCTION ===
+ * Nature's selection pressure: count matching bits to TARGET
+ * More matching bits → higher fitness → more likely to reproduce
+ */</span>
+<span class="c-type">float</span> <span class="c-fn">evaluate_fitness</span>(<span class="c-type">unsigned int</span> chrom) {
+    <span class="c-type">unsigned int</span> diff     = chrom ^ TARGET; <span class="c-cmt">// XOR → differing bits</span>
+    <span class="c-type">int</span>          matching = GENE_LEN - __builtin_popcount(diff);
+    <span class="c-kw">return</span> (<span class="c-type">float</span>)matching / GENE_LEN;    <span class="c-cmt">// Normalize [0.0, 1.0]</span>
+}
+
+<span class="c-cmt">/* === STEP 3: SINGLE-POINT CROSSOVER ===
+ * Sexual reproduction: splice two parent genomes at a random locus.
+ * Produces genetic novelty — the source of heritable variation.
+ */</span>
+<span class="c-type">unsigned int</span> <span class="c-fn">crossover</span>(<span class="c-type">unsigned int</span> parent_A, <span class="c-type">unsigned int</span> parent_B) {
+    <span class="c-type">int</span>          locus  = rand() % GENE_LEN; <span class="c-cmt">// Random crossover point</span>
+    <span class="c-type">unsigned int</span> mask   = (<span class="c-num">1</span> &lt;&lt; locus) - <span class="c-num">1</span>;
+    <span class="c-cmt">// Inherit left-segment from A, right-segment from B</span>
+    <span class="c-kw">return</span> (parent_A &amp; ~mask) | (parent_B &amp; mask);
+}
+
+<span class="c-cmt">/* === STEP 4: MUTATION ===
+ * Cosmic radiation, replication errors → random bit flips
+ * Low probability, but the engine of long-term evolution
+ */</span>
+<span class="c-type">unsigned int</span> <span class="c-fn">mutate</span>(<span class="c-type">unsigned int</span> chrom) {
+    <span class="c-kw">for</span> (<span class="c-type">int</span> bit = <span class="c-num">0</span>; bit &lt; GENE_LEN; bit++) {
+        <span class="c-kw">if</span> ((<span class="c-type">float</span>)rand() / RAND_MAX &lt; MUT_RATE)
+            chrom ^= (<span class="c-num">1</span> &lt;&lt; bit); <span class="c-cmt">// Flip the bit — point mutation!</span>
+    }
+    <span class="c-kw">return</span> chrom;
+}
+
+<span class="c-cmt">/* === MAIN: GENERATIONAL LOOP ===
+ * Simulate N generations of evolutionary pressure
+ */</span>
+<span class="c-type">int</span> <span class="c-fn">main</span>() {
+    Organism pop[POP_SIZE], next_gen[POP_SIZE];
+    <span class="c-fn">init_population</span>(pop);
+
+    <span class="c-kw">for</span> (<span class="c-type">int</span> gen = <span class="c-num">0</span>; gen &lt; <span class="c-num">500</span>; gen++) {
+
+        <span class="c-cmt">/* Evaluate all organisms */</span>
+        <span class="c-type">float</span> best = <span class="c-num">0.0f</span>;
+        <span class="c-kw">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; POP_SIZE; i++) {
+            pop[i].fitness = <span class="c-fn">evaluate_fitness</span>(pop[i].chromosome);
+            <span class="c-kw">if</span> (pop[i].fitness > best) best = pop[i].fitness;
+        }
+
+        <span class="c-fn">printf</span>(<span class="c-str">"Gen %03d | Best fitness: %.2f%%\n"</span>, gen, best * <span class="c-num">100</span>);
+        <span class="c-kw">if</span> (best >= <span class="c-num">1.0f</span>) { <span class="c-fn">printf</span>(<span class="c-str">"Optimal genotype reached!\n"</span>); <span class="c-kw">break</span>; }
+
+        <span class="c-cmt">/* Tournament selection + crossover → next generation */</span>
+        <span class="c-kw">for</span> (<span class="c-type">int</span> i = <span class="c-num">0</span>; i &lt; POP_SIZE; i++) {
+            <span class="c-type">int</span> a = rand() % POP_SIZE, b = rand() % POP_SIZE;
+            Organism *pA = (pop[a].fitness > pop[b].fitness) ? &amp;pop[a] : &amp;pop[b];
+            <span class="c-type">int</span> c = rand() % POP_SIZE, d = rand() % POP_SIZE;
+            Organism *pB = (pop[c].fitness > pop[d].fitness) ? &amp;pop[c] : &amp;pop[d];
+
+            next_gen[i].chromosome = <span class="c-fn">mutate</span>(<span class="c-fn">crossover</span>(pA->chromosome, pB->chromosome));
+        }
+        memcpy(pop, next_gen, <span class="c-kw">sizeof</span>(pop));
+    }
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- CRISPR bonus card -->
+    <div class="reveal mt-8">
+      <div class="glass-card p-6 flex flex-col md:flex-row gap-6 items-start" style="border-color:rgba(16,185,129,0.2);">
+        <img src="https://images.unsplash.com/photo-1576086213369-97a306d36557?w=400&q=80" alt="CRISPR gene editing laboratory" style="width:100%;max-width:280px;border-radius:8px;object-fit:cover;max-height:180px;filter:saturate(0.65) hue-rotate(180deg);" loading="lazy"/>
+        <div>
+          <span class="phase-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-emerald);border:1px solid rgba(16,185,129,0.2);margin-bottom:0.75rem;">CRISPR-Cas9 Spotlight</span>
+          <h3 style="font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;">Editing the Genome's Source Code</h3>
+          <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.7;">CRISPR-Cas9 acts as molecular scissors guided by RNA to precise genomic locations. It enables deletion, replacement, or correction of disease-causing mutations. The 2020 Nobel Prize in Chemistry recognised Jennifer Doudna &amp; Emmanuelle Charpentier for this breakthrough — effectively making biology programmable.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== FOOTER ===================== -->
+<footer id="footer" class="py-16 px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid md:grid-cols-3 gap-10 mb-10">
+      <!-- Branding -->
+      <div>
+        <p style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--text-primary);margin-bottom:0.5rem;">Genesis &amp; Genomics</p>
+        <p style="font-size:0.8rem;color:var(--text-muted);line-height:1.7;margin-bottom:1rem;">A BTech educational presentation bridging biological theory and computational logic. Built with curiosity and code.</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--accent-cyan);">Project by [Your Name]</p>
+        <p style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text-muted);">BTech — Biotechnology / CSE · 2024–25</p>
+      </div>
+
+      <!-- Resources -->
+      <div>
+        <h4 style="font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent-cyan);margin-bottom:1rem;">Sequence Databases</h4>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <a href="https://www.ncbi.nlm.nih.gov/genbank/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-cyan);">↗</span> NCBI GenBank
+          </a>
+          <a href="https://www.ebi.ac.uk/ena" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-emerald)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-emerald);">↗</span> EMBL-EBI (European Nucleotide Archive)
+          </a>
+          <a href="https://www.ddbj.nig.ac.jp/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='#c4b5fd'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:#c4b5fd;">↗</span> DDBJ (DNA Data Bank of Japan)
+          </a>
+          <a href="https://www.uniprot.org/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-cyan);">↗</span> UniProt (Protein Sequences)
+          </a>
+          <a href="https://www.rcsb.org/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-emerald)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-emerald);">↗</span> RCSB PDB (Protein Data Bank)
+          </a>
+        </div>
+      </div>
+
+      <!-- Additional Resources -->
+      <div>
+        <h4 style="font-size:0.75rem;font-weight:600;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent-emerald);margin-bottom:1rem;">Further Reading</h4>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <a href="https://www.genome.gov/human-genome-project" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-cyan);">↗</span> NHGRI – Human Genome Project
+          </a>
+          <a href="https://blast.ncbi.nlm.nih.gov/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-emerald)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-emerald);">↗</span> NCBI BLAST (Official Tool)
+          </a>
+          <a href="https://www.ncbi.nlm.nih.gov/books/NBK21154/" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='#c4b5fd'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:#c4b5fd;">↗</span> Molecular Biology of the Cell (NCBI)
+          </a>
+          <a href="https://www.khanacademy.org/science/ap-biology" target="_blank" style="font-size:0.83rem;color:var(--text-muted);text-decoration:none;display:flex;align-items:center;gap:0.5rem;transition:color 0.2s;" onmouseover="this.style.color='var(--accent-cyan)'" onmouseout="this.style.color='var(--text-muted)'">
+            <span style="color:var(--accent-cyan);">↗</span> Khan Academy — AP Biology
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div style="border-top:1px solid var(--border-subtle);padding-top:1.5rem;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:1rem;">
+      <p style="font-size:0.75rem;color:var(--text-muted);">© 2025 Genesis &amp; Genomics. Educational use only. Built with HTML5, Tailwind CSS &amp; Vanilla JS.</p>
+      <p style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-muted);">life.execute() // version 3.8B</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===================== JAVASCRIPT ===================== -->
+<script>
+/* =============================================
+   MODULE 1 — SCROLL REVEAL
+   ============================================= */
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      // Stagger children if available
+      const children = e.target.querySelectorAll('.stagger-child');
+      children.forEach((child, i) => {
+        child.style.transitionDelay = `${i * 0.1}s`;
+        child.classList.add('visible');
+      });
+    }
+  });
+}, { threshold: 0.08 });
+
+document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+
+/* =============================================
+   MODULE 2 — QUIZ
+   ============================================= */
+const quizData = [
+  {
+    q: "Which organelle is responsible for ATP production via cellular respiration?",
+    options: ["Ribosome", "Mitochondria", "Golgi Apparatus", "Lysosome"],
+    answer: 1
+  },
+  {
+    q: "In Whittaker's 5-Kingdom classification, which kingdom contains organisms that are prokaryotic?",
+    options: ["Protista", "Fungi", "Monera", "Animalia"],
+    answer: 2
+  },
+  {
+    q: "During which phase of Mitosis do chromosomes align along the cell's equatorial plate?",
+    options: ["Prophase", "Anaphase", "Telophase", "Metaphase"],
+    answer: 3
+  },
+  {
+    q: "Homeostasis in blood glucose levels is primarily an example of which feedback mechanism?",
+    options: ["Positive feedback", "Cascade feedback", "Negative feedback", "Open-loop control"],
+    answer: 2
+  },
+  {
+    q: "How many haploid cells are produced at the end of Meiosis II?",
+    options: ["2 diploid cells", "4 haploid cells", "2 haploid cells", "8 haploid cells"],
+    answer: 1
+  }
+];
+
+let quizState = { current: 0, score: 0, answered: 0 };
+
+function initQuiz() {
+  quizState = { current: 0, score: 0, answered: 0 };
+  document.getElementById('quiz-score-display').textContent = 'Score: 0/5';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-restart').style.display = 'none';
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const container = document.getElementById('quiz-container');
+  if (quizState.current >= quizData.length) {
+    showFinalResult();
+    return;
+  }
+  const q = quizData[quizState.current];
+  container.innerHTML = `
+    <div style="margin-bottom:1rem;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.75rem;">
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.72rem;color:var(--text-muted);">Question ${quizState.current + 1} of ${quizData.length}</span>
+        <div style="height:4px;flex:1;margin:0 1rem;background:rgba(148,163,184,0.1);border-radius:2px;overflow:hidden;">
+          <div style="height:100%;width:${((quizState.current)/quizData.length)*100}%;background:linear-gradient(90deg,var(--accent-cyan),var(--accent-emerald));transition:width 0.5s;"></div>
+        </div>
+      </div>
+      <p style="font-size:0.95rem;font-weight:600;line-height:1.55;margin-bottom:1rem;">${q.q}</p>
+      <div style="display:flex;flex-direction:column;gap:0.5rem;" id="options-wrap">
+        ${q.options.map((opt, i) => `
+          <button class="quiz-option" onclick="checkAnswer(${i})">${String.fromCharCode(65+i)}. ${opt}</button>
+        `).join('')}
+      </div>
+      <div id="feedback-msg" style="display:none;margin-top:0.75rem;font-size:0.85rem;"></div>
+    </div>
+  `;
+}
+
+function checkAnswer(selectedIdx) {
+  const q = quizData[quizState.current];
+  const buttons = document.querySelectorAll('.quiz-option');
+  const feedback = document.getElementById('feedback-msg');
+
+  buttons.forEach(btn => btn.disabled = true);
+  buttons[q.answer].classList.add('correct');
+
+  if (selectedIdx === q.answer) {
+    quizState.score++;
+    buttons[selectedIdx].classList.add('correct');
+    feedback.innerHTML = `<span style="color:#6ee7b7;">✓ Correct!</span> ${getExplanation(quizState.current)}`;
+  } else {
+    buttons[selectedIdx].classList.add('incorrect');
+    feedback.innerHTML = `<span style="color:#fca5a5;">✗ Incorrect.</span> The correct answer is <strong style="color:#6ee7b7;">${String.fromCharCode(65+q.answer)}. ${q.options[q.answer]}</strong>. ${getExplanation(quizState.current)}`;
+  }
+
+  feedback.style.display = 'block';
+  document.getElementById('quiz-score-display').textContent = `Score: ${quizState.score}/${quizData.length}`;
+
+  quizState.current++;
+  setTimeout(() => {
+    renderQuestion();
+  }, 2200);
+}
+
+function getExplanation(idx) {
+  const explanations = [
+    "Mitochondria generate ATP through the Krebs cycle and oxidative phosphorylation.",
+    "Monera comprises all prokaryotic organisms — bacteria and archaea — lacking a membrane-bound nucleus.",
+    "During Metaphase, spindle fibers attach to centromeres and align chromosomes along the metaphase plate.",
+    "Negative feedback loops counteract deviations from a set point — insulin lowers high blood glucose.",
+    "Meiosis produces 4 genetically unique haploid gametes via two successive division rounds."
+  ];
+  return `<span style="color:var(--text-muted);font-size:0.8rem;">${explanations[idx]}</span>`;
+}
+
+function showFinalResult() {
+  document.getElementById('quiz-container').innerHTML = '';
+  const pct = (quizState.score / quizData.length) * 100;
+  const grade = pct === 100 ? '🏆 Perfect Score!' : pct >= 80 ? '🎯 Excellent!' : pct >= 60 ? '📚 Good effort!' : '💡 Keep studying!';
+  const color = pct >= 80 ? 'var(--accent-emerald)' : pct >= 60 ? 'var(--accent-cyan)' : '#f59e0b';
+  const resultDiv = document.getElementById('quiz-result');
+  resultDiv.style.display = 'block';
+  resultDiv.style.background = `rgba(${pct>=80?'16,185,129':pct>=60?'6,182,212':'245,158,11'},0.07)`;
+  resultDiv.style.border = `1px solid rgba(${pct>=80?'16,185,129':pct>=60?'6,182,212':'245,158,11'},0.2)`;
+  resultDiv.innerHTML = `
+    <div style="font-size:2rem;margin-bottom:0.5rem;">${grade}</div>
+    <div style="font-size:1.8rem;font-weight:700;color:${color};font-family:'JetBrains Mono',monospace;">${quizState.score}/${quizData.length}</div>
+    <div style="font-size:0.85rem;color:var(--text-muted);margin-top:0.25rem;">${pct.toFixed(0)}% accuracy</div>
+  `;
+  document.getElementById('quiz-restart').style.display = 'block';
+}
+
+// Boot quiz
+initQuiz();
+
+
+/* =============================================
+   MODULE 3 — BLAST SIMULATION
+   ============================================= */
+function setSeq(seq) {
+  document.getElementById('blast-input').value = seq;
+}
+
+const mockDB = [
+  { id: 'NC_000001.11', org: 'Homo sapiens chromosome 1', score: 0, eVal: '', identity: '' },
+  { id: 'NM_000546.6',  org: 'Homo sapiens TP53 tumor suppressor mRNA', score: 0, eVal: '', identity: '' },
+  { id: 'NR_024540.1',  org: 'Homo sapiens WASH7P (pseudogene)', score: 0, eVal: '', identity: '' },
+  { id: 'XM_024452493', org: 'Pan troglodytes (chimpanzee) genome', score: 0, eVal: '', identity: '' },
+  { id: 'NG_005905.2',  org: 'Mus musculus BRCA1 gene region', score: 0, eVal: '', identity: '' }
+];
+
+const statusMessages = [
+  'Initializing BLAST search...',
+  'Parsing query sequence...',
+  'Indexing k-mer seeds...',
+  'Extending ungapped alignments...',
+  'Applying Smith-Waterman gapping...',
+  'Evaluating E-values...',
+  'Sorting high-scoring pairs...',
+  'Compiling results...'
+];
+
+function runBLAST() {
+  const seq = document.getElementById('blast-input').value.trim().toUpperCase();
+  const validBases = /^[ATGCNRYWSKMBDHV]+$/;
+
+  if (!seq || seq.length < 6) {
+    showBlastError('Please enter a valid DNA sequence of at least 6 bases (A, T, G, C).');
+    return;
+  }
+  if (!validBases.test(seq)) {
+    showBlastError('Invalid characters detected. Only DNA bases (A, T, G, C, N, and IUPAC codes) are allowed.');
+    return;
+  }
+
+  document.getElementById('blast-result').style.display = 'none';
+  document.getElementById('blast-loading').style.display = 'block';
+
+  let msgIdx = 0;
+  const msgInterval = setInterval(() => {
+    if (msgIdx < statusMessages.length) {
+      document.getElementById('blast-status-text').textContent = statusMessages[msgIdx++];
+    }
+  }, 300);
+
+  setTimeout(() => {
+    clearInterval(msgInterval);
+    document.getElementById('blast-loading').style.display = 'none';
+    showBlastResult(seq);
+  }, 2600);
+}
+
+function showBlastError(msg) {
+  const r = document.getElementById('blast-result');
+  r.style.display = 'block';
+  r.innerHTML = `<div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.25);border-radius:8px;padding:1rem;color:#fca5a5;font-size:0.85rem;">⚠ ${msg}</div>`;
+}
+
+function showBlastResult(seq) {
+  // Generate pseudo-realistic results based on sequence
+  const gcContent = ((seq.split('G').length - 1 + seq.split('C').length - 1) / seq.length * 100).toFixed(1);
+  const complement = seq.split('').reverse().map(b => ({A:'T',T:'A',G:'C',C:'G',N:'N'}[b]||b)).join('');
+
+  const hits = mockDB.map((entry, i) => ({
+    ...entry,
+    score:    Math.floor(180 - i * 22 + Math.random() * 18),
+    eVal:     (Math.pow(10, -(8 - i * 1.5 + Math.random()))).toExponential(2),
+    identity: (97 - i * 4.5 - Math.random() * 2).toFixed(1) + '%',
+    coverage: (100 - i * 3 - Math.random() * 3).toFixed(0) + '%'
+  }));
+
+  const r = document.getElementById('blast-result');
+  r.style.display = 'block';
+  r.innerHTML = `
+    <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.2);border-radius:10px;padding:1.25rem;margin-bottom:1rem;">
+      <div style="display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.75rem;">
+        <span style="color:var(--accent-emerald);font-weight:700;font-size:0.95rem;">✓ Search Complete</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-muted);background:rgba(148,163,184,0.08);padding:2px 8px;border-radius:4px;">Query length: ${seq.length} bp</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-muted);background:rgba(148,163,184,0.08);padding:2px 8px;border-radius:4px;">GC content: ${gcContent}%</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text-muted);background:rgba(148,163,184,0.08);padding:2px 8px;border-radius:4px;">DB: nr (non-redundant)</span>
+      </div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--accent-cyan);margin-bottom:0.5rem;">Query:   5'- ${seq} -3'</div>
+      <div style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-muted);">Comp:    3'- ${complement} -5'</div>
+    </div>
+
+    <div style="font-size:0.78rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;margin-bottom:0.75rem;display:grid;grid-template-columns:1fr 60px 80px 70px 70px;gap:0.5rem;padding:0 0.25rem;">
+      <span>Description</span><span>Score</span><span>E-value</span><span>Identity</span><span>Coverage</span>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:0.5rem;">
+      ${hits.map((h, i) => `
+        <div style="display:grid;grid-template-columns:1fr 60px 80px 70px 70px;gap:0.5rem;align-items:center;background:rgba(30,41,59,0.5);border:1px solid rgba(148,163,184,${i===0?'0.2':'0.08'});border-radius:8px;padding:0.75rem 0.5rem;${i===0?'border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.05);':''}">
+          <div>
+            <div style="font-size:0.82rem;color:${i===0?'#6ee7b7':'var(--text-primary)'};font-weight:${i===0?'600':'400'}">${h.org}</div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text-muted);">${h.id}</div>
+          </div>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:${i===0?'#6ee7b7':'var(--accent-cyan)'};">${h.score}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.75rem;color:var(--text-muted);">${h.eVal}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:${parseFloat(h.identity)>90?'#6ee7b7':parseFloat(h.identity)>80?'var(--accent-cyan)':'var(--text-muted)'};">${h.identity}</span>
+          <span style="font-family:'JetBrains Mono',monospace;font-size:0.78rem;color:var(--text-muted);">${h.coverage}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:0.75rem;font-size:0.72rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">// Simulated results for educational purposes. Use NCBI BLAST for real sequence alignment.</div>
+  `;
+}
+</script>
+
+</body>
+</html>
