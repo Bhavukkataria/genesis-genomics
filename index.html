@@ -6,32 +6,94 @@
   <title>Genesis & Genomics: The Evolution of Life's Logic</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+  <script src="https://3Dmol.org/build/3Dmol-min.js"></script>
   <style>
-    :root {
-      --bg-primary: #0f172a;
-      --bg-secondary: #1e293b;
-      --bg-card: #162032;
-      --accent-cyan: #06b6d4;
-      --accent-emerald: #10b981;
-      --accent-violet: #8b5cf6;
-      --text-primary: #f1f5f9;
-      --text-muted: #94a3b8;
-      --border-subtle: rgba(6,182,212,0.15);
-    }
 
-    * { scroll-behavior: smooth; }
+   
+  /* 1. Remove the "Moving" Texture Background */
+  body::before {
+    display: none !important; /* This stops the 'noise' layer from shifting during scroll */
+  }
 
-    body {
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
-    }
+  body {
+    background-color: #f8fafc !important; /* Solid, stable light gray */
+    padding-top: 70px !important; /* Permanent gap for the nav bar */
+    overflow-x: hidden;
+    margin: 0;
+  }
 
-    /* ===== SCROLLBAR ===== */
-    ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-primary); }
-    ::-webkit-scrollbar-thumb { background: var(--accent-cyan); border-radius: 3px; }
+  /* 2. Lock the Navigation Bar */
+  nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: #ffffff !important; /* Solid white - NO transparency */
+    border-bottom: 1px solid #e2e8f0;
+    z-index: 9999; /* Ensure it stays above everything */
+    display: flex;
+    align-items: center;
+    /* Use 'transform' to force GPU acceleration for smoother scrolling */
+    transform: translateZ(0); 
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  /* 3. Stabilize the Hero Section */
+  #hero {
+    background: #ffffff !important; /* Solid white background for the first section */
+    position: relative;
+    z-index: 1;
+  }
+
+  /* 4. Disable Parallax SVG if it feels shaky */
+  .helix-svg {
+    pointer-events: none; /* Stops the SVG from interfering with scroll mouse-events */
+    position: absolute;
+    right: 0;
+    opacity: 0.05; /* Make it very subtle so it doesn't distract the eye */
+  }
+
+  :root {
+    --bg-primary: #f1f3f4;      /* Kaggle light gray background */
+    --bg-card: #ffffff;        /* Pure white cards */
+    --accent-blue: #008abc;    /* Signature Kaggle Blue */
+    --text-primary: #202124;   /* Dark gray for readability */
+    --text-muted: #5f6368;     /* Medium gray for secondary text */
+    --border-subtle: #dadce0;  /* Light gray borders */
+    --accent-violet: #673ab7;  /* Kaggle secondary purple */
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    font-family: 'Inter', sans-serif; /* Clean sans-serif like Kaggle */
+  }
+
+  /* Kaggle-style Card */
+  .glass-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 8px;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 1px 3px 1px rgba(60,64,67,0.15);
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  .glass-card:hover {
+    box-shadow: 0 1px 3px 0 rgba(60,64,67,0.3), 0 4px 8px 3px rgba(60,64,67,0.15);
+    transform: none; /* Kaggle doesn't use heavy lift animations */
+  }
+
+  nav {
+    background: #ffffff;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .section-title {
+    color: var(--text-primary);
+    background: none; /* Remove gradients for a cleaner look */
+    -webkit-text-fill-color: initial;
+    font-family: 'Space Grotesk', sans-serif;
+  }
 
     /* ===== NOISE TEXTURE OVERLAY ===== */
     body::before {
@@ -87,25 +149,30 @@
     .animate-hero-4 { animation: fadeSlideUp 0.8s ease 0.6s forwards; opacity: 0; }
 
     /* ===== NAV ===== */
-    nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 50;
-      background: rgba(15,23,42,0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-subtle);
-    }
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: #ffffff !important; /* Solid white background */
+    border-bottom: 1px solid #e2e8f0; /* Soft light gray border */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Very subtle shadow for depth */
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
 
-    .nav-link {
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      transition: color 0.2s;
-      padding: 0.25rem 0.5rem;
-    }
-    .nav-link:hover { color: var(--accent-cyan); }
+  .nav-link {
+    color: #475569 !important; /* Slate gray text */
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: #06b6d4 !important; /* Cyan hover color */
+    background: #f8fafc; /* Light selection highlight */
+    border-radius: 6px;
+  }
 
     /* ===== SECTION TITLES ===== */
     .section-label {
@@ -173,7 +240,7 @@
 
     /* ===== QUIZ ===== */
     .quiz-option {
-      background: rgba(30,41,59,0.7);
+      background: rgb(255, 255, 255);
       border: 1px solid rgba(148,163,184,0.15);
       border-radius: 8px;
       padding: 0.75rem 1rem;
@@ -185,13 +252,13 @@
       font-family: 'Space Grotesk', sans-serif;
       font-size: 0.9rem;
     }
-    .quiz-option:hover:not(:disabled) { border-color: var(--accent-cyan); background: rgba(6,182,212,0.08); }
+    .quiz-option:hover:not(:disabled) { border-color: var(--accent-cyan); background: rgb(125, 157, 157); }
     .quiz-option.correct { border-color: var(--accent-emerald); background: rgba(16,185,129,0.12); color: #6ee7b7; }
     .quiz-option.incorrect { border-color: #f87171; background: rgba(248,113,113,0.1); color: #fca5a5; }
 
     /* ===== BLAST TOOL ===== */
     .blast-input {
-      background: rgba(15,23,42,0.9);
+      background: rgb(255, 255, 255);
       border: 1px solid rgba(6,182,212,0.3);
       border-radius: 8px;
       color: var(--accent-cyan);
@@ -207,7 +274,7 @@
 
     .blast-btn {
       background: linear-gradient(135deg, var(--accent-cyan), var(--accent-emerald));
-      color: #0f172a;
+      color: #00000093;
       font-weight: 700;
       font-size: 0.85rem;
       letter-spacing: 0.05em;
@@ -231,7 +298,7 @@
 
     /* ===== CODE BLOCK ===== */
     .code-block {
-      background: #0a0f1a;
+      background:#00000093;
       border: 1px solid rgba(139,92,246,0.25);
       border-radius: 12px;
       overflow-x: auto;
@@ -413,7 +480,7 @@
           <div style="position:relative;margin-bottom:2.5rem;">
             <div class="timeline-dot" style="position:absolute;left:-40px;top:4px;background:var(--accent-cyan);box-shadow:0 0 10px var(--accent-cyan);"></div>
             <div class="glass-card p-5">
-              <span class="phase-badge" style="background:rgba(6,182,212,0.1);color:var(--accent-cyan);border:1px solid rgba(6,182,212,0.2);">Whittaker 1969</span>
+              <span class="phase-badge" style="background:rgba(16,185,129,0.1);color:var(--accent-cyan);border:1px solid rgba(6,182,212,0.2);">Whittaker 1969</span>
               <h3 style="font-size:1.05rem;font-weight:700;margin:0.75rem 0 0.5rem;">5-Kingdom Classification</h3>
               <p style="font-size:0.85rem;color:var(--text-muted);line-height:1.6;">Robert Whittaker proposed dividing all life into <strong style="color:var(--text-primary)">Monera, Protista, Fungi, Plantae,</strong> and <strong style="color:var(--text-primary)">Animalia</strong> based on cell type, nutrition mode, and body organization. Monera are prokaryotes; all others are eukaryotes.</p>
               <div class="flex flex-wrap gap-2 mt-3">
@@ -500,7 +567,7 @@
               <div style="color:var(--accent-cyan);font-weight:600;margin-bottom:2px;">Negative Feedback</div>
               <div style="color:var(--text-muted);">Body temp, blood glucose regulation</div>
             </div>
-            <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.15);border-radius:8px;padding:0.75rem;font-size:0.78rem;">
+            <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(255, 255, 255, 0.301);border-radius:8px;padding:0.75rem;font-size:0.78rem;">
               <div style="color:var(--accent-emerald);font-weight:600;margin-bottom:2px;">Positive Feedback</div>
               <div style="color:var(--text-muted);">Childbirth contractions, blood clotting</div>
             </div>
@@ -511,9 +578,9 @@
 
     <!-- ===== QUIZ ===== -->
     <div class="reveal mt-16">
-      <div class="glass-card p-8" style="border-color:rgba(139,92,246,0.2);">
+      <div class="glass-card p-8" style="border-color:hsl(139, 66%, 39%);">
         <div style="display:flex;align-items:center;gap:0.75rem;margin-bottom:1.5rem;">
-          <div style="width:36px;height:36px;border-radius:8px;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);display:flex;align-items:center;justify-content:center;font-size:1rem;">🧠</div>
+          <div style="width:36px;height:36px;border-radius:8px;background:hsl(0, 0%, 100%);border:1px solid rgb(245, 244, 247);display:flex;align-items:center;justify-content:center;font-size:1rem;">🧠</div>
           <div>
             <h3 style="font-size:1.1rem;font-weight:700;">Unit 1 — Knowledge Quiz</h3>
             <p style="font-size:0.78rem;color:var(--text-muted);">Test your understanding of cell biology &amp; homeostasis</p>
@@ -522,13 +589,56 @@
         </div>
         <div id="quiz-container"></div>
         <div id="quiz-result" style="display:none;margin-top:1.5rem;padding:1.25rem;border-radius:10px;text-align:center;"></div>
-        <button id="quiz-restart" style="display:none;margin-top:1rem;background:rgba(139,92,246,0.15);border:1px solid rgba(139,92,246,0.3);color:#c4b5fd;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'Space Grotesk',sans-serif;width:100%;" onclick="initQuiz()">↺ Restart Quiz</button>
+        <button id="quiz-restart" style="display:none;margin-top:1rem;background:hsl(139, 66%, 39%);border:1px solid hsl(139, 66%, 39%);color:#957dc3;padding:0.6rem 1.5rem;border-radius:8px;cursor:pointer;font-size:0.85rem;font-family:'Space Grotesk',sans-serif;width:100%;" onclick="initQuiz()">↺ Restart Quiz</button>
       </div>
     </div>
   </div>
 </section>
 
 <div class="section-divider"></div>
+<!-- ===================== 3D-Model ===================== -->
+<section id="visualizer" class="py-12 px-6 bg-[#1d1d1d]"> <div class="max-w-7xl mx-auto">
+    <div class="flex flex-col md:flex-row gap-4 h-[600px]">
+      
+      <div class="w-full md:w-64 bg-[#282828] border border-[#3d3d3d] rounded-l-lg p-4 flex flex-col gap-6">
+        <div>
+          <span class="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-4 block">Object Properties</span>
+          <label class="text-[11px] text-gray-400 block mb-2">PDB Identifier</label>
+          <input id="pdb-id" type="text" value="1A3N" 
+                 class="w-full bg-[#181818] border border-[#3d3d3d] p-2 rounded text-xs uppercase text-cyan-400 focus:border-cyan-500 outline-none">
+        </div>
+
+        <button onclick="load3D()" 
+                class="w-full bg-[#3d3d3d] hover:bg-[#4d4d4d] text-white py-2 rounded text-xs font-semibold transition border border-[#555]">
+            Render Structure
+        </button>
+
+        <div class="mt-auto border-t border-[#3d3d3d] pt-4">
+          <span class="text-[10px] text-gray-500 block mb-2 uppercase tracking-tighter">Viewport Info</span>
+          <div class="text-[10px] text-gray-400 space-y-1 mono">
+            <p>Model: <span id="view-model-name" class="text-emerald-500">Hemoglobin</span></p>
+            <p>Engine: 3Dmol.js v1.0</p>
+            <p>Mode: Cartoon/Ribbon</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex-1 relative bg-[#0b0b0b] rounded-r-lg border border-[#3d3d3d] overflow-hidden">
+        <div class="absolute top-4 left-4 z-10 pointer-events-none">
+            <div class="text-[10px] text-gray-500 mono bg-black/40 px-2 py-1 rounded">User Perspective</div>
+        </div>
+
+        <div id="container-3d" style="height: 100%; width: 100%;" class="cursor-move"></div>
+        
+        <div class="absolute bottom-0 w-full bg-[#282828]/80 border-t border-[#3d3d3d] px-4 py-1 flex justify-between text-[9px] text-gray-400 mono">
+            <span>Rotation: Active</span>
+            <span>Zoom: Mouse Scroll</span>
+            <span>Origin: 0, 0, 0</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ===================== UNIT 2: BIOCHEMICAL BRICKS ===================== -->
 <section id="biochem" class="py-24 px-6">
@@ -1165,6 +1275,52 @@ function showBlastResult(seq) {
     <div style="margin-top:0.75rem;font-size:0.72rem;color:var(--text-muted);font-family:'JetBrains Mono',monospace;">// Simulated results for educational purposes. Use NCBI BLAST for real sequence alignment.</div>
   `;
 }
+
+/* =============================================
+   3D PROTEIN VISUALIZER LOGIC
+   ============================================= */
+/* =============================================
+   BLENDER-STYLE VIEWPORT LOGIC
+   ============================================= */
+let blenderViewer = null;
+
+function load3D() {
+    const id = document.getElementById('pdb-id').value.trim() || '1A3N';
+    const container = document.getElementById('container-3d');
+    
+    // Set UI model name based on common IDs
+    const names = { '1A3N': 'Hemoglobin', '3INS': 'Insulin', '1BNA': 'DNA Helix', '4OO8': 'CRISPR-Cas9' };
+    document.getElementById('view-model-name').innerText = names[id.toUpperCase()] || 'Protein ' + id;
+
+    if (!blenderViewer) {
+        // Initialize with Blender's dark-gray background
+        blenderViewer = $3Dmol.createViewer(container, { backgroundColor: '#111111' });
+    }
+
+    blenderViewer.clear();
+    
+    // Show loading state in Sidebar if needed
+    
+    $3Dmol.download("pdb:" + id, blenderViewer, { doAssembly: true }, function() {
+        // STYLE: 'cartoon' is the professional ribbon style
+        blenderViewer.setStyle({}, { cartoon: { color: 'spectrum' } }); 
+        
+        // ADDING HIGHLIGHTS: Like Blender's "Selection Outline"
+        blenderViewer.addSurface($3Dmol.SurfaceType.VDW, {
+            opacity: 0.1,
+            color: 'white'
+        }, {}, {}); 
+
+        blenderViewer.zoomTo();
+        blenderViewer.render();
+        
+        // ANIMATION: Constant rotation like a 3D turntable
+        blenderViewer.spin(true); 
+    });
+}
+
+// Initialize on load
+window.addEventListener('load', load3D);
 </script>
 
 </body>
